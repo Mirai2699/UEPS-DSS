@@ -1,0 +1,386 @@
+CREATE DATABASE upds_v1 
+
+CREATE TABLE  r_user_role
+(
+	usr_ID int(10) AUTO_INCREMENT NOT NULL,
+	usr_desc varchar(100) NOT NULL,
+	usr_stat varchar(10) DEFAULT "Active" NOT NULL,
+	usr_timestamp datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+		Primary key(usr_ID)
+)
+;
+
+
+CREATE TABLE  r_district
+(
+	dstrct_ID int(10) AUTO_INCREMENT NOT NULL,
+	dstrct_name varchar(50) NOT NULL,
+	dstrct_representative varchar(150) NOT NULL,
+	dstrct_stat bit(1) NOT NULL,
+	dstrct_timestamp datetime NOT NULL,
+		Primary key(dstrct_ID)
+)
+;
+
+CREATE TABLE  r_municipality
+(
+	munic_ID int(10) AUTO_INCREMENT NOT NULL,
+	munic_name varchar(50) NOT NULL,
+	munic_district int(10) NOT NULL,
+	munic_area varchar(100) NOT NULL,
+	munic_density varchar(100) NOT NULL,
+	munic_coor_lat varchar(255) NOT NULL,
+	munic_coor_lng varchar(255) NOT NULL,
+	munic_stat varchar(10) DEFAULT "Active" NOT NULL,
+	munic_timestamp datetime NOT NULL,
+		Primary key(munic_ID),
+		CONSTRAINT FK_munic_dstrct FOREIGN KEY (munic_district)
+		        REFERENCES r_district(dstrct_ID)
+)
+;
+
+CREATE TABLE r_user_profile
+(
+	up_ID int(10) AUTO_INCREMENT NOT NULL,
+	up_lastname varchar(100) NOT NULL,
+	up_middlename varchar(100) NULL,
+	up_firstname varchar(100) NOT NULL,
+	up_municipality int(10) NOT NULL,
+	up_position varchar(50) NOT NULL,
+	up_picture varchar(255) DEFAULT "default.png" NOT NULL ,
+	up_active_flag varchar(10) DEFAULT "Active" NOT NULL,
+	up_timestamp datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+		Primary key(up_ID),
+		CONSTRAINT FK_up_munic FOREIGN KEY (up_municipality)
+		        REFERENCES r_municipality(munic_ID)
+)
+;	
+
+CREATE TABLE t_user_accounts
+(
+	acc_ID int(10) AUTO_INCREMENT NOT NULL,
+	acc_profID int(10) NOT NULL,
+	acc_username varchar(100) NOT NULL,
+	acc_password varchar(100) NOT NULL,
+	acc_email varchar(255) NOT NULL,
+	acc_user_role int(10) NOT NULL,
+	acc_active_flag varchar(10) DEFAULT "Active" NOT NULL,
+	acc_timestamp datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+		Primary key(acc_ID),
+		CONSTRAINT FK_acc_role FOREIGN KEY (acc_user_role)
+    			REFERENCES r_user_role(usr_ID),
+        CONSTRAINT FK_acc_emp FOREIGN KEY (acc_profID)
+    			REFERENCES r_user_profile(up_ID)  
+)
+;
+
+CREATE TABLE t_users_log
+(
+	log_No	int(200) AUTO_INCREMENT NOT NULL,
+	log_userID int(10) NOT NULL,
+	log_usertype int(10) NOT NULL,
+	log_datestamp date  NOT NULL,
+	log_timestamp time NOT NULL,
+		Primary key(log_No),
+		CONSTRAINT FK_loguserID FOREIGN KEY (log_userID)
+    			REFERENCES t_user_accounts(acc_ID) 
+
+)
+;
+
+CREATE TABLE t_applicants
+(
+	app_ID int(10) AUTO_INCREMENT NOT NULL,
+	app_lastname varchar(100) NOT NULL,
+	app_middlename varchar(100) NULL,
+	app_firstname varchar(100) NOT NULL,
+	app_homeaddress varchar(255) NOT NULL,
+	app_contact_no varchar(11) NOT NULL,
+	app_active_status varchar(20) DEFAULT "Active" NOT NULL,
+	app_add_timestamp datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	app_mod_timestamp datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+		Primary key(app_ID)
+
+)
+;
+
+CREATE TABLE r_land_use
+(
+	lu_ID int(10) AUTO_INCREMENT NOT NULL,
+	lu_desc varchar(100) NOT NULL,
+	lu_active_status varchar(20) DEFAULT "Active" NOT NULL,
+	lu_add_timestamp datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	lu_mod_timestamp datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+		Primary key(lu_ID)
+)
+;
+
+
+CREATE TABLE r_barangay
+(
+	brgy_ID int(10) AUTO_INCREMENT NOT NULL,
+	brgy_name varchar(60) NOT NULL,
+	brgy_PSGC varchar(20) NULL,
+	brgy_municipality int(10) NOT NULL,
+	brgy_stat varchar(10) DEFAULT "Active" NOT NULL,
+	brgy_timestamp datetime NOT NULL,
+		Primary key(brgy_ID),
+		CONSTRAINT FK_brgy_munic FOREIGN KEY (brgy_municipality)
+		        REFERENCES r_municipality(munic_ID)
+)
+;
+
+
+
+
+
+
+CREATE TABLE t_zoning_application
+(
+	za_ID int(10) AUTO_INCREMENT NOT NULL,
+	za_no varchar(100) NOT NULL,
+	za_applicant_ID int(10) NOT NULL,	
+	za_applicant_address varchar(100) NOT NULL,
+	za_name_corporation varchar(100) NOT NULL,
+	za_address_corporation varchar(200) NOT NULL,
+	za_name_auth_rep varchar(100) NOT NULL,
+	za_address_auth_rep varchar(200) NOT NULL,
+	za_project_type varchar(50) NOT NULL,
+	za_project_nature varchar(50) NOT NULL,
+	za_loc_number varchar(50) NOT NULL,
+	za_loc_street varchar(50) NOT NULL,
+	za_loc_municipality int(10) NOT NULL,
+	za_loc_brgy int(10) NOT NULL,
+	za_loc_province varchar(20) NOT NULL,
+	za_project_area varchar(10) NOT NULL,
+	za_project_ROL varchar(20) NOT NULL,
+
+	za_project_ROL_TCT_no varchar(50) NULL,
+	za_project_ROL_lease_no varchar(50) NULL,
+	za_project_ROL_others varchar(50) NULL,
+
+	za_project_tenure varchar(20)  NOT NULL,
+	za_project_tenure_start_year year(4) NULL,
+	za_project_tenure_end_year year(4) NULL,
+	za_project_tenure_count_years varchar(5) NULL,
+	
+	za_land_use_ID int(10) NOT NULL,
+	za_tenancy varchar(20) NOT NULL,
+	za_project_cost_num varchar(20) NOT NULL,
+	za_project_cost_words varchar(150) NOT NULL,
+	za_zoning_compliance varchar(20) NOT NULL,
+	za_zoning_admin  varchar(100) NULL,
+	za_zoning_notice_date  varchar(100) NULL,
+	za_zoning_notice_request_desc  varchar(100) NULL,
+	za_similar_application varchar(20) NOT NULL,
+	za_simapp_other_office varchar(100) NULL, 
+	za_simapp_date_filled varchar(100) NULL,
+	za_simapp_action_taken varchar(100) NULL,
+	za_mode_release varchar(30) NOT NULL,
+	za_moderel_address_to varchar(100) NULL,
+
+
+	za_app_status varchar(20) NOT NULL,
+	za_app_step_no varchar(10) NOT NULL,
+	za_app_step varchar(500) NOT NULL,
+	za_app_remarks varchar(255) NULL,
+	za_app_project_dev_stat varchar(20) NULL,
+
+	za_app_mapping_expert int(10) NULL,
+	za_app_map_eval varchar(255) NULL,
+	za_app_map_eval_date datetime NULL,
+
+
+
+	za_active_status varchar(20) DEFAULT "Active" NOT NULL,
+	za_add_timestamp datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	za_mod_timestamp datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	za_revised_timestamp datetime NULL,
+	za_approved_timestamp datetime NULL,
+	za_close_timestamp datetime NULL,
+		Primary key(za_ID),
+		UNIQUE(za_no),
+		CONSTRAINT FK_applicant_ID FOREIGN KEY (za_applicant_ID)
+    			REFERENCES t_applicants(app_ID),
+    	CONSTRAINT FK_map_expert FOREIGN KEY (za_app_mapping_expert)
+    			REFERENCES t_user_accounts(acc_ID),
+    	CONSTRAINT FK_munic_ID FOREIGN KEY (za_loc_municipality)
+    			REFERENCES r_municipality(munic_ID),
+    	CONSTRAINT FK_bgry_ID FOREIGN KEY (za_loc_brgy)
+    			REFERENCES r_barangay(brgy_ID),
+    	CONSTRAINT FK_landuse_ID FOREIGN KEY (za_land_use_ID)
+    			REFERENCES r_land_use(lu_ID)
+
+
+
+)
+;
+
+CREATE TABLE t_project_development
+(
+	projdev_ID int(10) AUTO_INCREMENT NOT NULL,
+	projdev_no varchar(20) NOT NULL,
+	projdev_za_no varchar(20) NOT NULL,
+	projdev_subject varchar(100) NOT NULL,
+	projdev_estimated_proj_start_date date NOT NULL,
+	projdev_actual_proj_start_date date NULL,
+	projdev_estimated_proj_end_date date NOT NULL,
+	projdev_actual_proj_end_date date NULL,
+	projdev_status varchar(20) NOT NULL,
+	projdev_closing_remarks varchar(200) NULL,
+
+
+	projdev_stat varchar(10) DEFAULT "Active" NOT NULL,
+	projdev_timestamp datetime NOT NULL,
+		Primary key(projdev_ID),
+		UNIQUE(projdev_no),
+		CONSTRAINT FK_proj_devzano FOREIGN KEY (projdev_za_no)
+		        REFERENCES t_zoning_application(za_no)
+)
+;
+
+
+CREATE TABLE t_project_tasks
+(
+	pro_task_ID int(10) AUTO_INCREMENT NOT NULL,
+	pro_task_project_no varchar(20) NOT NULL,
+	pro_task_desc varchar(255) NOT NULL,
+	pro_task_status varchar(20) DEFAULT "PENDING" NOT NULL,
+	pro_task_done_date date NULL,
+
+	pro_task_stat varchar(10) DEFAULT "Active" NOT NULL,
+	pro_task_timestamp datetime NOT NULL,
+		Primary key(pro_task_ID),
+		CONSTRAINT FK_proj_dev_no FOREIGN KEY (pro_task_project_no)
+		        REFERENCES t_project_development(projdev_no)
+)
+;
+
+
+
+CREATE TABLE r_zoning_conditions
+(
+	zc_ID int(10) AUTO_INCREMENT NOT NULL,
+	zc_type varchar(30) NOT NULL,
+	zc_desc varchar(255) NOT NULL,
+
+	zc_stat varchar(10) DEFAULT "Active" NOT NULL,
+	zc_timestamp datetime NOT NULL,
+		Primary key(zc_ID)
+)
+;
+
+
+CREATE TABLE t_zoning_issuance
+(
+	zi_ID int(10) AUTO_INCREMENT NOT NULL,
+	zi_za_no varchar(30) NOT NULL,
+	zi_dec_no varchar(10) NOT NULL,
+	zi_lc_no varchar(10) NOT NULL,
+	zi_dec_desc varchar(255) NOT NULL,
+	zi_ROL_desc varchar(150) NOT NULL,
+	zi_date_receipt date NOT NULL,
+	zi_date_issued date NOT NULL,
+	zi_pay_amount decimal(10,2) NOT NULL,
+	zi_pmo_no varchar(30) NOT NULL,
+	zi_zoning_admin_incharge int(10) NOT NULL,
+	
+
+
+	zi_stat varchar(10) DEFAULT "Active" NOT NULL,
+	zi_timestamp datetime NOT NULL,
+		Primary key(zi_ID),
+		UNIQUE(zi_dec_no),
+		CONSTRAINT FK_zoning_issue FOREIGN KEY (zi_za_no)
+		        REFERENCES t_zoning_application(za_no)
+)
+;
+
+
+CREATE TABLE t_zoning_issuance_conditions
+(
+	zic_ID int(10) AUTO_INCREMENT NOT NULL,
+	zic_dec_no varchar(10) NOT NULL,
+	zic_zc_no int(10) NOT NULL,
+
+	zi_stat varchar(10) DEFAULT "Active" NOT NULL,
+	zi_timestamp datetime NOT NULL,
+		Primary key(zic_ID),
+		CONSTRAINT FK_decision_no FOREIGN KEY (zic_dec_no)
+				REFERENCES t_zoning_issuance(zi_dec_no),
+		CONSTRAINT FK_condition_no FOREIGN KEY (zic_zc_no)
+				REFERENCES r_zoning_conditions(zc_ID)
+)
+;
+
+
+CREATE TABLE r_zoning_requirement
+(
+	rqrmnt_ID int(10) AUTO_INCREMENT NOT NULL,
+	rqrmnt_desc varchar(100) NOT NULL,
+	rqrmnt_stat varchar(10) DEFAULT "Active" NOT NULL,
+	rqrmnt_timestamp datetime NOT NULL,
+		Primary key(rqrmnt_ID)
+)
+;
+
+CREATE TABLE t_zoning_rqrmnt_passed
+(
+	rp_ID int(10) AUTO_INCREMENT NOT NULL,
+	rp_za_no varchar(100) NOT NULL,
+	rp_rqrmnt_ID int(10) NOT NULL,
+	rp_stat varchar(10) DEFAULT "Active" NOT NULL,
+	rp_timestamp datetime NOT NULL,
+		Primary key(rp_ID),
+		CONSTRAINT FK_rp_za_no FOREIGN KEY (rp_za_no)
+				REFERENCES t_zoning_application(za_no),
+		CONSTRAINT FK_rp_rqmnt_ID FOREIGN KEY (rp_rqrmnt_ID)
+				REFERENCES r_zoning_requirement(rqrmnt_ID)
+)
+;
+
+
+CREATE TABLE `r_references` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `file_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+ `uploaded_on` datetime NOT NULL,
+ `status` enum('1','0') COLLATE utf8_unicode_ci NOT NULL DEFAULT '1',
+ PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `r_barangay_details`
+(
+	brgy_det_ID int(10) AUTO_INCREMENT NOT NULL, 
+	brgy_det_captain varchar(100) NOT NULL,
+	brgy_det_refID int(10) NOT NULL,
+	brgy_det_status varchar(10) DEFAULT "Active" NOT NULL,
+	brgy_timestamp datetime NOT NULL,
+		Primary key(brgy_det_ID),
+		CONSTRAINT FK_brgy FOREIGN KEY (brgy_det_refID)
+				REFERENCES r_barangay(brgy_ID)
+);
+
+CREATE TABLE `r_barangay_population`
+(
+	brgy_pop_ID int(10) AUTO_INCREMENT NOT NULL,
+	brgy_pop_count int(10) NOT NULL,
+	brgy_pop_year year(4) NOT NULL,
+	brgy_pop_per_annum varchar(10) NOT NULL,
+	brgy_pop_refID int(10) NOT NULL,
+	brgy_pop_status varchar(10) DEFAULT "Active" NOT NULL,
+	brgy_pop_timestamp datetime NOT NULL,
+		Primary key(brgy_pop_ID),
+		CONSTRAINT FK_brgy_pop FOREIGN KEY (brgy_pop_refID)
+				REFERENCES r_barangay(brgy_ID)
+
+);
+
+
+CREATE TABLE `r_terrain_hazard`
+(
+	haz_ID int(10) AUTO_INCREMENT NOT NULL,
+	haz_desc varchar(100) NOT NULL,
+	haz_stat varchar(10) DEFAULT "Active" NOT NULL,
+	haz_timestamp datetime NOT NULL,
+		Primary key(haz_ID)
+);

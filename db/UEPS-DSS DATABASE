@@ -1,0 +1,163 @@
+CREATE DATABASE fhbd_v1;
+
+CREATE TABLE  r_user_role
+(
+	usr_ID int(10) AUTO_INCREMENT NOT NULL,
+	usr_desc varchar(50) NOT NULL,
+	usr_stat bit(1) NOT NULL,
+	usr_timestamp datetime NOT NULL,
+		Primary key(usr_ID)
+)
+;
+
+
+CREATE TABLE r_event_type
+(
+	evt_ID int(10) AUTO_INCREMENT NOT NULL,
+	evt_desc varchar(100) NOT NULL,
+	evt_active_stat varchar(10) DEFAULT "Active" NOT NULL,
+	evt_timestamp datetime NOT NULL,
+		Primary key(evt_ID)
+	
+);
+
+
+CREATE TABLE r_city
+(
+	city_ID int(10) AUTO_INCREMENT NOT NULL,
+	city_name varchar(225) NOT NULL,
+	city_active_stat DEFAULT "Active" NOT NULL,
+	city_timestamp datetime NOT NULL,
+		Primary key(city_ID)
+);
+
+
+CREATE TABLE r_university
+(
+	uni_ID int(10) AUTO_INCREMENT NOT NULL,
+	uni_name varchar(225) NOT NULL,
+	uni_city int(10) NOT NULL,
+	uni_address varchar(225) NOT NULL,
+	uni_desc varchar(225) NOT NULL,
+	uni_active_stat varchar(10) DEFAULT "Active" NOT NULL,
+	uni_timestamp datetime NOT NULL,
+		Primary key(uni_ID),
+		CONSTRAINT FK_city FOREIGN KEY (uni_city)
+		        REFERENCES r_city(city_ID)
+);
+
+
+
+
+CREATE TABLE t_admin_users
+(
+	u_ID int(10) AUTO_INCREMENT NOT NULL,
+	u_lastname varchar(100) NOT NULL,
+	u_middlename varchar(100) NULL,
+	u_firstname varchar(100) NOT NULL,
+	u_university int(10) NOT NULL,
+	u_designation varchar(50) NOT NULL,
+	u_picture varchar(255) DEFAULT "default.png" NOT NULL ,
+	u_active_flag bit(1) DEFAULT 1 NOT NULL,
+		Primary key(u_ID),
+		CONSTRAINT FK_university_emp FOREIGN KEY (u_university)
+		        REFERENCES r_university(uni_ID)
+)
+;
+
+CREATE TABLE t_student
+(
+	s_ID int(10) AUTO_INCREMENT NOT NULL,
+	s_lastname varchar(100) NOT NULL,
+	s_middlename varchar(100) NULL,
+	s_firstname varchar(100) NOT NULL,
+	s_gender varchar(10) NOT NULL,
+	s_birthdate date NOT NULL,
+	s_city_location int(10) NOT NULL,
+	s_university int(10) NOT NULL,
+	s_designation varchar(50) NOT NULL,
+	s_picture varchar(255) DEFAULT "default.png" NOT NULL ,
+	s_active_flag bit(1) DEFAULT 1 NOT NULL,
+		Primary key(s_ID),
+		CONSTRAINT FK_university_stu FOREIGN KEY (s_university)
+		        REFERENCES r_university(uni_ID)
+);
+
+CREATE TABLE t_student_interest
+(
+
+);
+
+
+CREATE TABLE t_student_sentiment
+(
+
+);
+
+
+CREATE TABLE t_accounts
+(
+	acc_ID int(10) AUTO_INCREMENT NOT NULL,
+	acc_empID int(10) NOT NULL,
+	acc_username varchar(100) NOT NULL,
+	acc_password varchar(100) NOT NULL,
+	acc_user_role int(10) NOT NULL,
+	acc_picture varchar(255) DEFAULT "default.png" NOT NULL ,
+	acc_active_flag bit(1) DEFAULT 1 NOT NULL,
+		Primary key(acc_ID),
+		CONSTRAINT FK_acc_role FOREIGN KEY (acc_user_role)
+    			REFERENCES r_user_role(usr_ID),
+        CONSTRAINT FK_acc_emp FOREIGN KEY (acc_empID)
+    			REFERENCES t_employees(emp_ID)  
+)
+;
+
+CREATE TABLE t_users_log
+(
+	log_No	int(200) AUTO_INCREMENT NOT NULL,
+	log_userID int(10) NOT NULL,
+	log_usertype int(10) NOT NULL,
+	log_datestamp date  NOT NULL,
+	log_timestamp time NOT NULL,
+		Primary key(log_No),
+		CONSTRAINT FK_loguserID FOREIGN KEY (log_userID)
+    			REFERENCES t_accounts(acc_ID) 
+
+)
+;
+
+CREATE TABLE t_events
+(
+	ev_ID int(10) AUTO_INCREMENT NOT NULL,
+	ev_name varchar(100) NOT NULL,
+	ev_desc varchar(225) NOT NULL,
+	ev_typeID int(10) NOT NULL,
+	ev_date_start date NOT NULL,
+	ev_date_end date NOT NULL,
+	ev_venue varchar(225) NOT NULL,
+	ev_fee_type varchar(30) NOT NULL,
+	ev_fee_amount decimal(10,2) NULL,
+	ev_status varchar(20) NOT NULL,
+	ev_by_university int(10) NOT NULL,
+	ev_by_event_admin int(10) NOT NULL,
+	ev_active_stat varchar(10) NOT NULL,
+	ev_timestamp datetime NOT NULL,
+		Primary key(ev_ID),
+		CONSTRAINT FK_evetype FOREIGN KEY (ev_typeID)
+    			REFERENCES r_event_type(evt_ID) ,
+        CONSTRAINT FK_university FOREIGN KEY (ev_by_university)
+    			REFERENCES r_university(uni_ID),
+        CONSTRAINT FK_ev_admin FOREIGN KEY (ev_by_event_admin)
+    			REFERENCES t_accounts(acc_ID)  
+
+);
+
+
+
+CREATE TABLE t_data_mine_log
+(
+	dm_ID int(10) AUTO_INCREMENT NOT NULL,
+	dm_no varchar(20) NOT NULL,
+	dm_timestamp datetime NOT NULL,
+		Primary key(dm_ID) 
+);
