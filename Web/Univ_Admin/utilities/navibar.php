@@ -19,47 +19,12 @@
             </a>  
           </li>
           <li class="has-sub">
-            <a href="references.php">
-                <i class="fa fa-book"></i>
-                <span>References</span>
-            </a>  
-          </li>
-          <li class="has-sub">
-            <a href="javascript:;">
-              <b class="caret"></b>
-              <i class="fa  fa-user"></i> 
-              <span>Manage Applicants</span>
-            </a>
-            <ul class="sub-menu">
-                <li><a href="applicant_add.php">Add Applicant</a></li>
-                <li><a href="applicant_manage.php">View Applicants</a></li>
-            </ul>
-          </li>
-          <li class="has-sub">
-            <a href="javascript:;">
-              <b class="caret"></b>
-              <i class="fa  fa-expand-arrows-alt"></i> 
-              <span>Zoning Applications</span>
-            </a>
-            <ul class="sub-menu">
-                <li><a href="zone_app_add.php">Create Application</a></li>
-                <li><a href="zone_app_manage.php">Manage Pending Applications</a></li>
-                <li><a href="zone_app_revision.php">Review For Revision Applications</a></li>
-                <li><a href="zone_app_close.php">View Approved Applications</a></li>
-            </ul>
+            <a href="#">
+                <i class="fa fa-calendar"></i>
+                <span>Event Management</span>
+            </a> 
           </li>
           
-          <li class="has-sub">
-            <a href="javascript:;">
-              <b class="caret"></b>
-              <i class="fa fa-cogs"></i> 
-              <span>Report</span>
-            </a>
-            <ul class="sub-menu">
-                <li><a href="report_applicant.php">Applicants' Report</a></li>
-                <li><a href="report_zoning.php">Zoning Report</a></li>
-            </ul>
-          </li>
           <hr>
         </ul>
         <!-- end sidebar nav -->

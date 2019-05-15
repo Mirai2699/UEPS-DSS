@@ -75,22 +75,20 @@
           <?php 
 
                $userID = $_SESSION['UserID'];
-               $view_query = mysqli_query($connection,"SELECT * FROM `t_user_accounts` AS ACC 
+               $view_query = mysqli_query($connection,"SELECT * FROM `t_admin_accounts` AS ACC 
                                                        INNER JOIN `r_user_role` AS USR 
-                                                       INNER JOIN `r_user_profile` AS EMP 
+                                                       INNER JOIN `t_admin_users` AS EMP 
                                                        ON  ACC.acc_user_role = USR.usr_ID
-                                                       and ACC.acc_profID = EMP.up_ID
+                                                       and ACC.acc_userID = EMP.u_ID
                                                        WHERE ACC.acc_ID = '$userID'");
                while($row = mysqli_fetch_assoc($view_query))
                {
                    $ID = $row["acc_ID"];
-                   $up_lname = $row["up_lastname"];
-                   $up_mname = $row["up_middlename"];
-                   $up_fname = $row["up_firstname"];
-                   $up_munic = $row["up_municipality"];
-                   $up_pos = $row["up_position"];
-                   $up_pic = $row["up_picture"];
-
+                   $up_lname = $row["u_lastname"];
+                   $up_mname = $row["u_middlename"];
+                   $up_fname = $row["u_firstname"];
+                   $up_pic = $row["u_picture"];
+                   
                    $acc_username = $row["acc_username"];
                    $acc_password = $row["acc_password"];
                    $acc_user_role = $row["acc_user_role"];
@@ -103,15 +101,15 @@
           <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
 
             <?php  
-               $view_query = mysqli_query($connection,"SELECT * FROM `t_user_accounts` AS ACC 
+               $view_query = mysqli_query($connection,"SELECT * FROM `t_admin_accounts` AS ACC 
                                                        INNER JOIN `r_user_role` AS USR 
-                                                       INNER JOIN `r_user_profile` AS EMP 
+                                                       INNER JOIN `t_admin_users` AS EMP 
                                                        ON  ACC.acc_user_role = USR.usr_ID
-                                                       and ACC.acc_profID = EMP.up_ID
+                                                       and ACC.acc_userID = EMP.u_ID
                                                        WHERE ACC.acc_ID = '$userID'");
                while ($row = mysqli_fetch_array($view_query)) 
                {
-                 $pic = $row['up_picture'];
+                 $pic = $row['u_picture'];
 
                  if($pic != NULL)
                  {

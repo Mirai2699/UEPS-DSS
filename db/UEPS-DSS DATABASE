@@ -1,4 +1,4 @@
-CREATE DATABASE fhbd_v1;
+-- CREATE DATABASE ueps_dss;
 
 CREATE TABLE  r_user_role
 (
@@ -26,7 +26,7 @@ CREATE TABLE r_city
 (
 	city_ID int(10) AUTO_INCREMENT NOT NULL,
 	city_name varchar(225) NOT NULL,
-	city_active_stat DEFAULT "Active" NOT NULL,
+	city_active_stat varchar(10) DEFAULT "Active" NOT NULL,
 	city_timestamp datetime NOT NULL,
 		Primary key(city_ID)
 );
@@ -39,6 +39,7 @@ CREATE TABLE r_university
 	uni_city int(10) NOT NULL,
 	uni_address varchar(225) NOT NULL,
 	uni_desc varchar(225) NOT NULL,
+	uni_picture varchar(225) NOT NULL,
 	uni_active_stat varchar(10) DEFAULT "Active" NOT NULL,
 	uni_timestamp datetime NOT NULL,
 		Primary key(uni_ID),
@@ -75,7 +76,6 @@ CREATE TABLE t_student
 	s_birthdate date NOT NULL,
 	s_city_location int(10) NOT NULL,
 	s_university int(10) NOT NULL,
-	s_designation varchar(50) NOT NULL,
 	s_picture varchar(255) DEFAULT "default.png" NOT NULL ,
 	s_active_flag bit(1) DEFAULT 1 NOT NULL,
 		Primary key(s_ID),
@@ -85,20 +85,51 @@ CREATE TABLE t_student
 
 CREATE TABLE t_student_interest
 (
-
+	si_ID int(10) AUTO_INCREMENT NOT NULL,
+	si_stud_ID int(10) NOT NULL,
+	si_evt_ID int(10) NOT NULL,
+	si_active_stat varchar(10) DEFAULT "Active" NOT NULL,
+	si_timestamp datetime NOT NULL,
+		Primary key(si_ID),
+		CONSTRAINT FK_si_studID FOREIGN KEY (si_stud_ID)
+		        REFERENCES t_student(s_ID),
+		CONSTRAINT FK_si_eventID FOREIGN KEY (si_evt_ID)
+		        REFERENCES r_event_type(evt_ID)
 );
 
 
 CREATE TABLE t_student_sentiment
 (
-
+	ss_ID int(10) AUTO_INCREMENT NOT NULL,
+	ss_stud_ID int(10) NOT NULL,
+	ss_status varchar(10) NOT NULL,
+	ss_active_stat varchar(10) NOT NULL,
+	ss_timestamp datetime NOT NULL,
+		Primary key(ss_ID),
+		CONSTRAINT FK_ss_studID FOREIGN KEY (ss_stud_ID)
+		        REFERENCES t_student(s_ID)
 );
 
 
-CREATE TABLE t_accounts
+CREATE TABLE t_stud_accounts
+(
+	ac_stud_ID int(10) AUTO_INCREMENT NOT NULL,
+	ac_stud_userID int(10) NOT NULL,
+	ac_stud_username varchar(100) NOT NULL,
+	ac_stud_password varchar(100) NOT NULL,
+	ac_stud_user_role int(10) NOT NULL,
+	ac_stud_picture varchar(255) DEFAULT "default.png" NOT NULL ,
+	ac_stud_active_flag bit(1) DEFAULT 1 NOT NULL,
+		Primary key(ac_stud_ID),
+        CONSTRAINT FK_acc_stud FOREIGN KEY (ac_stud_userID)
+    			REFERENCES t_student(s_ID)  
+)
+;
+
+CREATE TABLE t_admin_accounts
 (
 	acc_ID int(10) AUTO_INCREMENT NOT NULL,
-	acc_empID int(10) NOT NULL,
+	acc_userID int(10) NOT NULL,
 	acc_username varchar(100) NOT NULL,
 	acc_password varchar(100) NOT NULL,
 	acc_user_role int(10) NOT NULL,
@@ -107,8 +138,8 @@ CREATE TABLE t_accounts
 		Primary key(acc_ID),
 		CONSTRAINT FK_acc_role FOREIGN KEY (acc_user_role)
     			REFERENCES r_user_role(usr_ID),
-        CONSTRAINT FK_acc_emp FOREIGN KEY (acc_empID)
-    			REFERENCES t_employees(emp_ID)  
+        CONSTRAINT FK_acc_emp FOREIGN KEY (acc_userID)
+    			REFERENCES t_admin_users(u_ID)  
 )
 ;
 
@@ -121,7 +152,7 @@ CREATE TABLE t_users_log
 	log_timestamp time NOT NULL,
 		Primary key(log_No),
 		CONSTRAINT FK_loguserID FOREIGN KEY (log_userID)
-    			REFERENCES t_accounts(acc_ID) 
+    			REFERENCES t_admin_accounts(acc_ID) 
 
 )
 ;
@@ -135,6 +166,7 @@ CREATE TABLE t_events
 	ev_date_start date NOT NULL,
 	ev_date_end date NOT NULL,
 	ev_venue varchar(225) NOT NULL,
+	ev_city int(10) NOT NULL,
 	ev_fee_type varchar(30) NOT NULL,
 	ev_fee_amount decimal(10,2) NULL,
 	ev_status varchar(20) NOT NULL,
@@ -144,14 +176,28 @@ CREATE TABLE t_events
 	ev_timestamp datetime NOT NULL,
 		Primary key(ev_ID),
 		CONSTRAINT FK_evetype FOREIGN KEY (ev_typeID)
-    			REFERENCES r_event_type(evt_ID) ,
+    			REFERENCES r_event_type(evt_ID),
+        CONSTRAINT FK_cityID FOREIGN KEY (ev_city)
+            	REFERENCES r_city(city_ID),
         CONSTRAINT FK_university FOREIGN KEY (ev_by_university)
     			REFERENCES r_university(uni_ID),
         CONSTRAINT FK_ev_admin FOREIGN KEY (ev_by_event_admin)
-    			REFERENCES t_accounts(acc_ID)  
+    			REFERENCES t_admin_accounts(acc_ID)  
 
 );
 
+CREATE TABLE t_event_activities
+(
+	ev_act_ID int(10) AUTO_INCREMENT NOT NULL,
+	ev_act_description varchar(225) NOT NULL,
+	ev_act_time_start time NOT NULL,
+	ev_act_eventID int(10) NOT NULL,
+	ev_act_active_stat varchar(10) DEFAULT "Active" NOT NULL,
+	ev_act_timestamp datetime NOT NULL,
+		Primary key(ev_act_ID),
+		CONSTRAINT FK_act_evtID FOREIGN KEY (ev_act_eventID)
+		      REFERENCES t_events(ev_ID)  
+);
 
 
 CREATE TABLE t_data_mine_log

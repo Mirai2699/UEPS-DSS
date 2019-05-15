@@ -2,7 +2,7 @@
      include ("../../../db_con.php");
      session_start();
         $type = $_SESSION['UserRole'];
-        if(!isset($_SESSION['UserName']) && $type!="3"){
+        if(!isset($_SESSION['UserName']) && $type!="2"){
           header('Location: 404.html?err=1');
         }
    

@@ -1,15 +1,16 @@
 <div class="cover with-shadow"></div>
 <div class="image">
   <?php  
-     $view_query = mysqli_query($connection,"SELECT * FROM `t_user_accounts` AS ACC 
+     $view_query = mysqli_query($connection,"SELECT * FROM `t_admin_accounts` AS ACC 
                                              INNER JOIN `r_user_role` AS USR 
-                                             INNER JOIN `r_user_profile` AS EMP 
+                                             INNER JOIN `t_admin_users` AS EMP 
                                              ON  ACC.acc_user_role = USR.usr_ID
-                                             and ACC.acc_profID = EMP.up_ID
+                                             and ACC.acc_userID = EMP.u_ID
                                              WHERE ACC.acc_ID = '$userID'");
      while ($row = mysqli_fetch_array($view_query)) 
      {
-       $pic = $row['up_picture'];
+       $pic = $row['u_picture'];
+       $u_desig = $row['u_designation'];
 
        if($pic != NULL)
        {
@@ -22,5 +23,5 @@
 </div>
 <div class="info">
    <?php echo $compname; ?>
-  <small><?php echo $up_pos; ?></small>
+  <small><?php echo $u_desig; ?></small>
 </div>

@@ -5,7 +5,7 @@
 <!--<![endif]-->
 <head>
 	<meta charset="utf-8" />
-	<title>Log In | MUPDS</title>
+	<title>Log In | UEPS</title>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
@@ -19,25 +19,7 @@
 	<link href="resources/admin/assets/css/default/style.min.css" rel="stylesheet" />
 	<link href="resources/admin/assets/css/default/style-responsive.min.css" rel="stylesheet" />
 	<link href="resources/admin/assets/css/default/theme/default.css" rel="stylesheet" id="theme" />
-  <?php
-    $db = mysqli_connect('localhost','root','','upds_v1');
-    $ui = mysqli_query($db,"SELECT * FROM master_ui_change WHERE muc_active_stat = 'Active'");
-    if(mysqli_num_rows($ui) > 0)
-    { 
-      while($row = mysqli_fetch_assoc($ui))
-      {
-        $filepath = 'resources/uploads';
-        $get_logo = $row["muc_logo"];
-        $default_logo = $filepath.'/'.$get_logo;
-
-        echo '<link href="'.$default_logo.'" rel="icon"  />';
-      }
-    }
-    else
-    {
-      echo'<link href="resources/images/ROP.png" rel="icon"  />';
-    }
-  ?>
+  
      
 	<!-- ================== END BASE CSS STYLE ================== -->
 	
@@ -51,55 +33,30 @@
 	<!-- end #page-loader -->
 	
 	<div class="login-cover">
-	    <div class="login-cover-image" style="background-image: url(resources/images/login1.jpg)" data-id="login-cover-image"></div>
+	    <div class="login-cover-image" style="background-image: url(resources/images/concert.jpg)" data-id="login-cover-image"></div>
 	    <div class="login-cover-bg"></div>
+
 	</div>
 	<!-- begin #page-container -->
+
 	<div id="page-container" class="fade">
+
 	    <!-- begin login -->
         <div class="login login-v2" data-pageload-addclass="animated fadeIn" style="background-color: white">
             <!-- begin brand -->
+            <div class="panel" style="background-color: #262626">
+               <a href="index.php" class="btn btn-success" style="margin: 5px">Go Back to Portal</a>
+               
+            </div>
             <div class="login-header">
-                <?php
-                   $db = mysqli_connect('localhost','root','','upds_v1');
-                  $uidef = mysqli_query($db,"SELECT * FROM master_ui_change WHERE muc_active_stat = 'Active'");
-                  if(mysqli_num_rows($uidef) > 0)
-                  { 
-                    while($row = mysqli_fetch_assoc($uidef))
-                    {
-                      $filepath = 'resources/uploads';
-                      $get_logo = $row["muc_logo"];
-                      $default_logo = $filepath.'/'.$get_logo;
-                      $Province = $row["muc_province"];
-                      $municipality = $row["muc_municipality"];
-
-
-                      echo "
-                      <div class='brand' style='color: black; text-align: center'>
-                          <b style='color: black; font-size: 16px; margin: 10px'>Republic of the Philippines</b>
-                          <img src='$default_logo' style='width:45%; margin-top: 10px; margin-bottom:10px' alt=''>
-                          <small style='color: black'>Province of $Province</small>
-                          <small style='color: black; font-size: 19px'>Municipality of $municipality</small>
-                          <b style='font-size: 26px'>Urban Planning Development System</b>
-                      </div>
-                      ";
-
-                    }
-                  }
-                  else
-                  {
-                    print
-                    '
-                      <div class="brand" style="color: black; text-align: center">
-                          <b style="color: black; font-size: 16px; margin: 10px">Republic of the Philippines</b>
-                          <img src="resources/images/ROP.png" style="width:45%; margin-top: 10px" alt=""><br>
-                          <b style="font-size: 26px">Municipal Urban Planning Development System</b>
-                      </div>
-                    ';
-                  }
-                ?>
-                
-
+               
+                <div class='brand' style='color: black; text-align: center'>
+                    <img src='$default_logo' style='width:45%; margin-top: 10px; margin-bottom:10px' alt=''>
+                    <div>
+                      <i class="fa fa-calendar" style="font-size: 30px"></i><br>
+                    </div>
+                    <b style='font-size: 26px'>University Events <br>Portal System</b>
+                </div>
 
                 <div class="icon">
                     <i class="fa fa-lock"></i>
@@ -127,9 +84,6 @@
                        <!-- <a href="Web/Admin/views/index.php" class="btn btn-danger btn-block btn-lg">Direct Log</a> -->
                     </div>
                     <hr>
-                    <p class="text-center text-grey-darker" style="font-size: 10px">
-                        &copy; SRG 7TH Generation All Right Reserved 2019
-                    </p>
                 </form>
             </div>
             <!-- end login-content -->

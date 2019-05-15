@@ -10,7 +10,7 @@
         $timein = date('H:i:s');
         $datein = date('Y-m-d');
         
-        $query = "SELECT * FROM t_user_accounts WHERE acc_username = '".$username."' and acc_password = '".$password."'";
+        $query = "SELECT * FROM t_admin_accounts WHERE acc_username = '".$username."' and acc_password = '".$password."'";
 
         $result = mysqli_query($connection,$query) or die(mysqli_error());
         if (mysqli_num_rows($result) > 0)
@@ -24,7 +24,7 @@
             // $email= $row['acc_email'];
 
            }
-          if($status == "Active")
+          if($status == 1)
           {
              session_start();
              $_SESSION['Logged_In'] = $UserName;
@@ -39,25 +39,7 @@
             else if($_SESSION['UserRole'] == "2")
             {
               
-              $header ='Location:Web/MPDC/views/index.php';
-              header($header);
-            } 
-            else if($_SESSION['UserRole'] == "3")
-            {
-              
-              $header ='Location:Web/Zoning_Officer/views/index.php';
-              header($header);
-            } 
-            else if($_SESSION['UserRole'] == "4")
-            {
-              
-              $header ='Location:Web/Mapping_Expert/views/index.php';
-              header($header);
-            } 
-            else if($_SESSION['UserRole'] == "5")
-            {
-              
-              $header ='Location:Web/PDO/views/index.php';
+              $header ='Location:Web/Univ_Admin/views/index.php';
               header($header);
             } 
             $ins_query = "INSERT INTO t_users_log (log_userID, log_usertype, log_datestamp, log_timestamp) 
