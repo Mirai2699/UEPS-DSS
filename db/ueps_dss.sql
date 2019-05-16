@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 15, 2019 at 01:51 PM
+-- Generation Time: May 16, 2019 at 02:03 AM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 7.2.10
 
@@ -189,11 +189,21 @@ CREATE TABLE `t_events` (
   `ev_fee_type` varchar(30) NOT NULL,
   `ev_fee_amount` decimal(10,2) DEFAULT NULL,
   `ev_status` varchar(20) NOT NULL,
+  `ev_picture` varchar(225) DEFAULT 'concert.jpg',
   `ev_by_university` int(10) NOT NULL,
   `ev_by_event_admin` int(10) NOT NULL,
   `ev_active_stat` varchar(10) NOT NULL,
   `ev_timestamp` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `t_events`
+--
+
+INSERT INTO `t_events` (`ev_ID`, `ev_name`, `ev_desc`, `ev_typeID`, `ev_date_start`, `ev_date_end`, `ev_venue`, `ev_city`, `ev_fee_type`, `ev_fee_amount`, `ev_status`, `ev_picture`, `ev_by_university`, `ev_by_event_admin`, `ev_active_stat`, `ev_timestamp`) VALUES
+(1, 'Youth Camp 2019', 'Camping in the Forest', 3, '2019-05-16', '2019-05-16', 'Forest', 2, 'free', NULL, 'PENDING', 'camping.jpg', 1, 2, 'Active', '2019-05-16 08:00:00'),
+(2, 'Local Concert', 'for donation purposes', 2, '2019-05-18', '2019-05-18', 'Quezon City Memorial Circle', 1, 'free', NULL, 'PENDING', 'concert.jpg', 1, 2, 'Active', '2019-05-16 00:00:00'),
+(3, 'Youth Seminar', 'seminar for youth people', 1, '2019-05-24', '2019-05-24', 'Lagro Subdivision', 1, 'free', NULL, 'PENDING', 'seminar.jpg', 1, 2, 'Active', '2019-05-16 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -296,7 +306,10 @@ INSERT INTO `t_users_log` (`log_No`, `log_userID`, `log_usertype`, `log_datestam
 (2, 2, 2, '2019-05-15', '19:22:59'),
 (3, 2, 2, '2019-05-15', '19:23:56'),
 (4, 2, 2, '2019-05-15', '19:24:25'),
-(5, 2, 2, '2019-05-15', '19:47:42');
+(5, 2, 2, '2019-05-15', '19:47:42'),
+(6, 2, 2, '2019-05-16', '07:45:33'),
+(7, 2, 2, '2019-05-16', '07:46:41'),
+(8, 2, 2, '2019-05-16', '07:53:03');
 
 --
 -- Indexes for dumped tables
@@ -451,7 +464,7 @@ ALTER TABLE `t_data_mine_log`
 -- AUTO_INCREMENT for table `t_events`
 --
 ALTER TABLE `t_events`
-  MODIFY `ev_ID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `ev_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `t_event_activities`
@@ -487,7 +500,7 @@ ALTER TABLE `t_stud_accounts`
 -- AUTO_INCREMENT for table `t_users_log`
 --
 ALTER TABLE `t_users_log`
-  MODIFY `log_No` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `log_No` int(200) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables

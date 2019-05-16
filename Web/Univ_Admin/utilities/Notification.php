@@ -1,5 +1,5 @@
 <ul class="navbar-nav navbar-right">
-        <li class="dropdown">
+        <!-- <li class="dropdown">
           <a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle f-s-14">
             <i class="fa fa-bell"></i>
             <span class="label">5</span>
@@ -70,7 +70,7 @@
               <a href="javascript:;">View more</a>
             </li>
           </ul>
-        </li>
+        </li> -->
         <li class="dropdown navbar-user">
           <?php 
 
@@ -125,14 +125,14 @@
             </span> <b class="caret"></b>
 
           </a>
-          <div class="dropdown-menu dropdown-menu-right">
+          <div class="dropdown-menu dropdown-menu-right"><!-- 
             <a href="javascript:;" class="dropdown-item">
               <span class="badge badge-danger pull-right">5</span> 
               Notification</a>
             <a href="javascript:;" class="dropdown-item">
               <span class="badge badge-danger pull-right">2</span> 
               Inbox
-            </a>
+            </a> -->
             <a href="javascript:;" class="dropdown-item">Change Password</a>
             <div class="dropdown-divider"></div>
             <a href="../../../logout.php" class="dropdown-item">Log Out</a>

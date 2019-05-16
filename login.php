@@ -51,10 +51,8 @@
             <div class="login-header">
                
                 <div class='brand' style='color: black; text-align: center'>
-                    <img src='$default_logo' style='width:45%; margin-top: 10px; margin-bottom:10px' alt=''>
-                    <div>
-                      <i class="fa fa-calendar" style="font-size: 30px"></i><br>
-                    </div>
+                    <img src="resources/images/event.png" /><br>
+                   
                     <b style='font-size: 26px'>University Events <br>Portal System</b>
                 </div>
 

@@ -18,6 +18,8 @@
 	<link href="resources/assets/css/one-page-parallax/style.min.css" rel="stylesheet" />
 	<link href="resources/assets/css/one-page-parallax/style-responsive.min.css" rel="stylesheet" />
 	<link href="resources/assets/css/one-page-parallax/theme/default.css" id="theme" rel="stylesheet" />
+
+    <link href="resources/images/event.png" id="theme" rel="icon" />
 	<!-- ================== END BASE CSS STYLE ================== -->
 	
 	<!-- ================== BEGIN BASE JS ================== -->
@@ -38,12 +40,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a href="index.html" class="navbar-brand">
-                        <span class="brand-logo"></span>
+                  <!--   <a href="index.html" class="navbar-brand">
+                       <img src="resources/images/event.png"/>
+                       <br>
                         <span class="brand-text">
                             <span class="text-theme">University Events</span> Web Portal
                         </span>
-                    </a>
+                    </a> -->
                 </div>
                 <!-- end navbar-header -->
                 <!-- begin navbar-collapse -->
@@ -108,67 +111,99 @@
                         <!-- begin item -->
                         <div class="item active">
                             <div class="col-md-8" style="background-color: white; margin-left:15%">
-                                <img src="resources/images/concert.jpg" style="width: 90%; margin-top: 10px" />
+                                <img src="resources/images/sampleevent1.jpg" style="width: 90%; margin-top: 10px" />
                                 <hr>
                                 <div class="panel">
-                                    <p style="color: black">
-                                        Sample Event Here<br>
-                                        Metro Manila
+                                    <p style="color: black; text-align: center; font-size: 30px">
+                                      On-Going Events
                                     </p>
                                 </div>
                             </div>
 
                         </div>
                         <!-- end item -->
-                        <!-- begin item -->
-                        <div class="item">
-                           <div class="col-md-8" style="background-color: white; margin-left:15%">
-                               <img src="resources/images/frontlogin2.jpg" style="width: 90%; margin-top: 10px" />
-                               <hr>
-                               <div class="panel">
-                                   <p style="color: black">
-                                       Sample Event Here<br>
-                                       Pasig City
-                                   </p>
-                               </div>
-                           </div>
-                        </div>
-                        <!-- end item -->
-                        <!-- begin item -->
-                        <div class="item">
-                           <div class="col-md-8" style="background-color: white; margin-left:15%">
-                               <img src="resources/images/gallery.jpg" style="width: 90%; margin-top: 10px" />
-                               <hr>
-                               <div class="panel">
-                                   <p style="color: black">
-                                       Sample Event Here<br>
-                                       Makati City
-                                   </p>
-                               </div>
-                           </div>
-                        </div>
+                        <?php 
+                            $curdate = date('Y-m-d');
+                            include('db_con.php');
+                            $get_ongoing = mysqli_query($connection,"SELECT * FROM `t_events` AS EVE
+                                                                             INNER JOIN `r_university` AS UNI 
+                                                                             ON EVE.ev_by_university = UNI.uni_ID
+                                                                             INNER JOIN `r_city` AS CTY 
+                                                                             ON EVE.ev_city = CTY.city_ID
+                                                                             INNER JOIN `r_event_type` AS EVTYPE 
+                                                                             ON EVE.ev_typeID = EVTYPE.evt_ID
+                                                                          WHERE EVE.ev_date_start = '$curdate'");
+                            while($row = mysqli_fetch_assoc($get_ongoing))
+                            {
+                                $ev_name = $row['ev_name'];
+                                $ev_desc = $row['ev_desc'];
+                                $ev_date_start = new datetime($row['ev_date_start']);
+                                $nf_ev_start_date = $ev_date_start->format('F d, Y');
+                                $ev_venue = $row['ev_venue'];
+                                $ev_city = $row['city_name'];
+                                $ev_type = $row['evt_desc'];
+                                $ev_picture = $row['ev_picture'];
+                                $ev_by_university = $row['uni_name'];
 
+                        ?>
+                        <!-- begin item -->
                         <div class="item">
-                            <div class="col-md-8" style="background-color: white; margin-left:15%">
-                                <img src="resources/images/concert.jpg" style="width: 90%; margin-top: 10px" />
-                                <hr>
-                                <div class="panel">
-                                    <p style="color: black">
-                                        Sample Event Here<br>
-                                        Manila City
-                                    </p>
-                                </div>
-                            </div>
+                           <div class="col-md-8" style="background-color: white; margin-left:15%">
+                               <img src="resources/images/<?php echo $ev_picture?>" style="width: 90%; margin-top: 10px" />
+                               <hr>
+                               <div class="panel">
+                                   <p style="color: black; text-align: center; font-size: 20px">
+                                     <?php echo $ev_name;?>
+                                   </p>
+                                   <p style="color: black; text-align: center; font-size: 14px">
+                                     <?php echo $ev_desc;?>
+                                   </p>
+                                   <p style="color: black; text-align: left; font-size: 14px">
+                                     <b>Date and Venue:</b>  <?php echo $nf_ev_start_date.' - '.$ev_venue.', '.$ev_city; ?><br>
+                                     <b>Event Type:</b>  <?php echo $ev_type?><br>
+                                     <b>Event Organized By:</b>  <?php echo $ev_by_university?><br><br>
+                                     <a href="#">View More Details  <i class="fa fa-arrow"></i></a>
+                                   </p>
+                               </div>
+                           </div>
                         </div>
-                        <!-- end item -->
+                    <?php } ?>
                     </div>
                     <!-- end carousel-inner -->
                     <!-- begin carousel-indicators -->
                     <ol class="carousel-indicators">
                         <li data-target="#testimonials" data-slide-to="0" class="active"></li>
-                        <li data-target="#testimonials" data-slide-to="1" class=""></li>
-                        <li data-target="#testimonials" data-slide-to="2" class=""></li>
-                        <li data-target="#testimonials" data-slide-to="3" class=""></li>
+                        <?php 
+                            $curdate = date('Y-m-d');
+                            include('db_con.php');
+                            $get_ongoing = mysqli_query($connection,"SELECT * FROM `t_events` AS EVE
+                                                                             INNER JOIN `r_university` AS UNI 
+                                                                             ON EVE.ev_by_university = UNI.uni_ID
+                                                                             INNER JOIN `r_city` AS CTY 
+                                                                             ON EVE.ev_city = CTY.city_ID
+                                                                             INNER JOIN `r_event_type` AS EVTYPE 
+                                                                             ON EVE.ev_typeID = EVTYPE.evt_ID
+                                                                          WHERE EVE.ev_date_start = '$curdate'");
+                            if(mysqli_num_rows($get_ongoing) == 0)
+                            {
+
+                            }
+                            else
+                            {
+                                $stopper = mysqli_num_rows($get_ongoing);
+                                $increment = 0;
+                                for($i = 1;$i <= $stopper ;$i++)
+                                {
+                                    $increment += 1;
+
+                                    echo 
+                                    '
+                                    <li data-target="#testimonials" data-slide-to="'.$increment.'" class=""></li>
+                                    ';
+                                }
+                            }
+                           
+                        ?>
                     </ol>
                     <!-- end carousel-indicators -->
                 </div>
@@ -206,7 +241,55 @@
 
                 </p>
                 <!-- begin row -->
-                <div class="row">
+                
+                    <?php 
+                        $curdate = date('Y-m-d');
+                        include('db_con.php');
+                        $get_ongoing = mysqli_query($connection,"SELECT * FROM `t_events` AS EVE
+                                                                         INNER JOIN `r_university` AS UNI 
+                                                                         ON EVE.ev_by_university = UNI.uni_ID
+                                                                         INNER JOIN `r_city` AS CTY 
+                                                                         ON EVE.ev_city = CTY.city_ID
+                                                                         INNER JOIN `r_event_type` AS EVTYPE 
+                                                                         ON EVE.ev_typeID = EVTYPE.evt_ID
+                                                                      WHERE EVE.ev_date_start != '$curdate'
+                                                                      AND EVE.ev_status = 'PENDING'");
+                        while($row = mysqli_fetch_assoc($get_ongoing))
+                        {
+                            $ev_name = $row['ev_name'];
+                            $ev_desc = $row['ev_desc'];
+                            $ev_date_start = new datetime($row['ev_date_start']);
+                            $nf_ev_start_date = $ev_date_start->format('F d, Y');
+                            $ev_venue = $row['ev_venue'];
+                            $ev_city = $row['city_name'];
+                            $ev_type = $row['evt_desc'];
+                            $ev_picture = $row['ev_picture'];
+                            $ev_by_university = $row['uni_name'];
+
+                    ?>
+                    <!-- begin item -->
+                       <div class="col-md-8" style="background-color: white; margin-left:16%; margin-bottom: 20px">
+                           <img src="resources/images/<?php echo $ev_picture?>" style="width: 100%; margin-top: 10px" />
+                           <hr>
+                           <div class="panel">
+                               <p style="color: black; text-align: center; font-size: 20px">
+                                 <?php echo $ev_name;?>
+                               </p>
+                               <p style="color: black; text-align: center; font-size: 14px">
+                                 <?php echo $ev_desc;?>
+                               </p>
+                               <p style="color: black; text-align: left; font-size: 14px">
+                                 <b>Date and Venue:</b>  <?php echo $nf_ev_start_date.' - '.$ev_venue.', '.$ev_city; ?><br>
+                                 <b>Event Type:</b>  <?php echo $ev_type?><br>
+                                 <b>Event Organized By:</b>  <?php echo $ev_by_university?><br><br>
+                                 <a href="#">View More Details  <i class="fa fa-arrow"></i></a>
+                               </p>
+                           </div>
+                       </div>
+                       <br>
+                    
+
+                <?php } ?>
                 </div>
                 <!-- end row -->
             </div>
@@ -221,20 +304,20 @@
         <div id="footer" class="footer">
             <div class="container">
                 <div class="footer-brand">
-                    <div class="footer-brand-logo"></div>
+                    <img src="resources/images/event.png" /><br>
                     UWEPS
                 </div>
                 <p>
                     &copy; UWEPS 2019<br />
                     University Events Portal System
                 </p>
-                <p class="social-list">
+                <!-- <p class="social-list">
                     <a href="#"><i class="fa fa-facebook fa-fw"></i></a>
                     <a href="#"><i class="fa fa-instagram fa-fw"></i></a>
                     <a href="#"><i class="fa fa-twitter fa-fw"></i></a>
                     <a href="#"><i class="fa fa-google-plus fa-fw"></i></a>
                     <a href="#"><i class="fa fa-dribbble fa-fw"></i></a>
-                </p>
+                </p> -->
             </div>
         </div>
         <!-- end #footer -->

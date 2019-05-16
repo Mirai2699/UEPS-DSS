@@ -1,6 +1,6 @@
 <div class="navbar-header">
 	<a href="index.php" class="navbar-brand">
-	<img src="../../../resources/images/ROP.png" style="width:20%;" alt="">';
+	<img src="../../../resources/images/event.png" style="width:20%;" alt="">
 		 
 		
 		<b>University Event</b> Portal System</a>
